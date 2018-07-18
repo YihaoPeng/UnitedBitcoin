@@ -238,6 +238,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 		txCoinBaseToChange.vout.push_back(root_state_hash_out);
 		originalRewardTx = txCoinBaseToChange;
         pblock->vtx[0] = MakeTransactionRef(std::move(txCoinBaseToChange));
+        pblocktemplate->vchCoinbaseRootStateHash = 
+            std::vector<unsigned char>(root_state_hash_out.scriptPubKey.begin(),
+                                       root_state_hash_out.scriptPubKey.end());
     }
 
 	// rollback root state hash

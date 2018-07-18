@@ -697,6 +697,12 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         result.push_back(Pair("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end())));
     }
 
+    auto fAllowContract = (pindexPrev->nHeight+1) >= Params().GetConsensus().UBCONTRACT_Height;
+
+    if (!pblocktemplate->vchCoinbaseRootStateHash.empty() && fAllowContract) {
+        result.push_back(Pair("default_root_state_hash", HexStr(pblocktemplate->vchCoinbaseRootStateHash.begin(), pblocktemplate->vchCoinbaseRootStateHash.end())));
+    }
+
     return result;
 }
 
